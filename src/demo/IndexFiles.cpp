@@ -23,6 +23,9 @@
 #include "CLucene/util/Misc.h"
 #include "CLucene/util/StringBuffer.h"
 
+#include "CLucene/analysis/LanguageBasedAnalyzer.h"
+#include "CLucene/analysis/standard/StandardAnalyzer.h"
+
 using namespace std;
 using namespace lucene::index;
 using namespace lucene::analysis;
@@ -55,6 +58,7 @@ void FileDocument(const char* f, Document* doc){
 		size_t r;
 		do{
 			r = fread(abuf,1,1023,fh);
+            // cout << "read origin buff " << r << endl;
 			abuf[r]=0;
 			STRCPY_AtoT(tbuf,abuf,r);
 			tbuf[r]=0;
@@ -62,7 +66,8 @@ void FileDocument(const char* f, Document* doc){
 		}while(r>0);
 		fclose(fh);
 
-		doc->add( *_CLNEW Field(_T("contents"), str.getBuffer(), Field::STORE_YES | Field::INDEX_TOKENIZED) );
+		// cout << "wide buff len is " << str.length() << ":" << r << endl;
+        doc->add( *_CLNEW Field(_T("contents"), str.getBuffer(), Field::STORE_YES | Field::INDEX_TOKENIZED) );
 	}
 }
 
@@ -87,7 +92,10 @@ void indexDocs(IndexWriter* writer, const char* directory) {
 }
 void IndexFiles(const char* path, const char* target, const bool clearIndex){
 	IndexWriter* writer = NULL;
-	lucene::analysis::WhitespaceAnalyzer an;
+	// lucene::analysis::WhitespaceAnalyzer an;
+    LanguageBasedAnalyzer an;
+    an.setLanguage(_T("cjk"));
+    // lucene::analysis::standard::StandardAnalyzer an;
 	
 	if ( !clearIndex && IndexReader::indexExists(target) ){
 		if ( IndexReader::isLocked(target) ){

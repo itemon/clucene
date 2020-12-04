@@ -6,6 +6,7 @@ ADD_DEFINITIONS(${EXTRA_OPTIONS})
 
 INCLUDE_DIRECTORIES( ${clucene-demo_SOURCE_DIR} )
 INCLUDE_DIRECTORIES( ${clucene_SOURCE_DIR}/src/core )
+INCLUDE_DIRECTORIES( ${clucene_SOURCE_DIR}/src/contribs-lib)
 
 file(GLOB_RECURSE demo_HEADERS ${CMAKE_SOURCE_DIR}/test/*.h)
 
@@ -20,4 +21,4 @@ ADD_EXECUTABLE(cl_demo EXCLUDE_FROM_ALL
 ${demo_HEADERS}
 )
 
-TARGET_LINK_LIBRARIES(cl_demo clucene-core clucene-shared ${EXTRA_LIBS})
+TARGET_LINK_LIBRARIES(cl_demo clucene-core clucene-shared clucene-contribs-lib ${EXTRA_LIBS})

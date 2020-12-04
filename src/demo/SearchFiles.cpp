@@ -15,6 +15,8 @@
 #include "CLucene/config/repl_wchar.h"
 #include "CLucene/util/Misc.h"
 
+#include "CLucene/analysis/LanguageBasedAnalyzer.h"
+
 using namespace std;
 using namespace lucene::analysis;
 using namespace lucene::index;
@@ -25,12 +27,23 @@ using namespace lucene::search;
 
 
 void SearchFiles(const char* index){
-    standard::StandardAnalyzer analyzer;
+    // standard::StandardAnalyzer analyzer;
+    LanguageBasedAnalyzer analyzer;
+    analyzer.setLanguage(_T("cjk"));
+
     char line[80];
     TCHAR tline[80];
     TCHAR* buf;
 
     IndexReader* reader = IndexReader::open(index);
+    TermEnum* te = reader->terms();
+
+    /*Term* term;
+    while (te->next()) {
+        term = te->term(true);
+        _tprintf(_T("Term is %s\n"), term->toString());
+    }*/
+
     while (true) {
         printf("Enter query string: ");
         char* tmp = fgets(line,80,stdin);

@@ -29,6 +29,8 @@ void getStats(const char* directory){
 
 	printf("Max Docs: %d\n", r->maxDoc() );
 	printf("Num Docs: %d\n", r->numDocs() );
+
+	_tprintf(_T("文字%s\n"), _T("格式"));
 	
     int64_t ver = r->getCurrentVersion(directory);
     _tprintf(_T("Current Version: %f\n"), (float_t)ver );
@@ -37,6 +39,8 @@ void getStats(const char* directory){
 	int32_t nterms;
 	for (nterms = 0; te->next() == true; nterms++) {
             /* empty */
+		_tprintf(_T("Term %s\n"), te->term()->text());
+		cout << te->term()->text() << endl;
     } 
 	printf("Term count: %d\n\n", nterms );
 	_CLLDELETE(te);
